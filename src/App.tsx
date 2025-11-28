@@ -15,19 +15,19 @@ import PartsPage from "./pages/Engineer/PartsPage";
 import MaterialDashboard from "./pages/Material/MaterialDashboard";
 import CustomerModel from "./pages/CustomerModel";
 import DocumentUpload from "./components/DocumentUpload";
-import PlanningDashboard from "./pages/Planning/PlanningDashboard";
-import PlanningPage from "./pages/Planning/PlanningPage";
+import PurchaseOrdersDashboard from "./pages/Planning/PurchaseOrdersDashboard";
+import PlanningManagement from "./pages/Planning/PlanningManagement";
 import PlanningLayout from "./pages/Planning/PlanningLayout";
+import SuppliersPage from "./pages/Planning/SuppliersPage";
+import AnalyticsPage from "./pages/Planning/AnalyticsPage";
 import OrdersDashboard from './pages/Orders/OrdersDashboard';
 import QualityDashboard from "./pages/Quality/QualityDashboard";
+import ProductionDashboard from "./pages/Production/ProductionDashboard";
+import UsersPage from "./pages/UsersPage";
+import ProductsPage from "./pages/ProductsPage";
+import SettingsPage from "./pages/SettingsPage";
+import ProfilePage from "./pages/ProfilePage";
 
-// Add this temporarily in your auth store or App.tsx
-console.log('Environment variables:', {
-  REACT_APP_API_URL: import.meta.env.VITE_API_URL,
-  MODE: import.meta.env.MODE,
-  DEV: import.meta.env.DEV,
-  all: import.meta.env
-});
 // Error fallback component for invalid roles or auth issues
 const InvalidRolePage = () => (
   <div className="min-h-screen flex items-center justify-center bg-gray-900">
@@ -38,7 +38,6 @@ const InvalidRolePage = () => (
       </p>
       <button 
         onClick={() => {
-          // Clear everything and force a fresh login
           sessionStorage.clear();
           useAuthStore.getState().logout().finally(() => {
             window.location.href = '/login';
@@ -56,13 +55,11 @@ const InvalidRolePage = () => (
 const RoleBasedDashboard = ({ role, user }: { role: string; user: any }) => {
   console.log('RoleBasedDashboard rendering with role:', role, 'user:', user?.email);
   
-  // Handle the case where user is missing or role is empty
   if (!user || !role) {
     console.log('Missing user or role data, showing invalid role page');
     return <InvalidRolePage />;
   }
 
-  // Direct return based on role
   switch (role) {
     case "admin":
       return <AdminPage />;
@@ -71,13 +68,11 @@ const RoleBasedDashboard = ({ role, user }: { role: string; user: any }) => {
     case "material":
       return <MaterialDashboard />;
     case "planning":
-      return <PlanningDashboard />;
-    case "purchase":
-      return <PurchaseDashboard />;  
-    case "logistics":
-      return <LogisticsDashboard />;
+      return <Navigate to="/planning" replace />;
+    case "production":
+      return <Navigate to="/production" replace />;
     case "quality":
-      return <QualityDashboard />;
+      return <Navigate to="/quality" replace />;
     case "user":
       return <DashboardPage />;
     default:
@@ -86,7 +81,7 @@ const RoleBasedDashboard = ({ role, user }: { role: string; user: any }) => {
   }
 };
 
-// Protected route wrapper with better validation
+// Protected route wrapper
 interface ProtectedRouteProps {
   children: ReactNode;
 }
@@ -98,7 +93,6 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 
   if (isCheckingAuth) return <LoadingSpinner />;
   
-  // Check both authentication AND user data
   if (!isAuthenticated || !user) {
     console.log('Not authenticated or missing user data, redirecting to login');
     return <Navigate to="/login" replace />;
@@ -136,21 +130,18 @@ const RedirectAuthenticatedUser = ({ children }: RedirectAuthenticatedUserProps)
 
   console.log('RedirectAuthenticatedUser:', { isAuthenticated, isCheckingAuth, hasUser: !!user });
 
-  // Wait for auth check to complete
   if (isCheckingAuth) {
     return <LoadingSpinner />;
   }
 
-  // Only redirect if both authenticated AND have user data
   if (isAuthenticated && user) {
     return <Navigate to="/" replace />;
   }
 
-  // Show children (login/signup pages) if not properly authenticated
   return <>{children}</>;
 };
 
-// Separate component to handle initial auth check
+// Auth checker component
 const AuthChecker = ({ children }: { children: ReactNode }) => {
   const { isCheckingAuth } = useAuthStore();
 
@@ -181,7 +172,7 @@ const App = () => {
     <AuthChecker>
       <div className="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 relative overflow-hidden">
         <Routes>
-          {/* Main dashboard and admin routes */}
+          {/* Main dashboard */}
           <Route
             path="/"
             element={
@@ -200,8 +191,9 @@ const App = () => {
               </AdminRoute>
             }
           >
-            <Route path="customers" element={<CustomerModel />} />
             <Route index element={<AdminPage />} />
+            <Route path="users" element={<UsersPage />} />
+            <Route path="customers" element={<CustomerModel />} />
             <Route path="orders" element={<OrdersDashboard />} />
           </Route>
 
@@ -223,26 +215,51 @@ const App = () => {
             }
           />
 
+          {/* Common Routes - Available to all authenticated users */}
+          <Route 
+            path="/products" 
+            element={
+              <ProtectedRoute>
+                <ProductsPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/settings" 
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/profile" 
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            } 
+          />
+
           {/* Document Upload */}
           <Route path="/upload-doc" element={<DocumentUpload />} />
           <Route path="/orders" element={<OrdersDashboard />} />
 
-          {/* Engineers Subpages */}
+          {/* Engineer Routes */}
           <Route
-              path="/engineer"
-              element={
-                  <ProtectedRoute>
-                  <EngineerDashboard />
-                </ProtectedRoute>
-             }
+            path="/engineer"
+            element={
+              <ProtectedRoute>
+                <EngineerDashboard />
+              </ProtectedRoute>
+            }
           >
-            <Route path="documents" element={<DocumentsPage />} />
             <Route index element={<EngineerHome />} /> 
+            <Route path="documents" element={<DocumentsPage />} />
             <Route path="parts" element={<PartsPage />} /> 
-            {/* Later you can add more, e.g. */}
-            {/* <Route path="profile" element={<EngineerProfile />} /> */}
           </Route>
 
+          {/* Quality Routes */}
           <Route
             path="/quality"
             element={
@@ -252,7 +269,7 @@ const App = () => {
             }
           />
 
- 
+          {/* Planning Routes */}
           <Route
             path="/planning"
             element={
@@ -261,11 +278,31 @@ const App = () => {
               </ProtectedRoute>
             }
           >
-            <Route index element={<PlanningDashboard />} />
-            <Route path="new-plan" element={<PlanningPage />} />
-            {/* you can add suppliers, analytics routes here as well */}
+            <Route index element={<PurchaseOrdersDashboard />} />
+            <Route path="suppliers" element={<SuppliersPage />} />
+            <Route path="analytics" element={<AnalyticsPage />} />
+            <Route path="new-plan" element={<PlanningManagement />} />
           </Route>
 
+          {/* Production Routes */}
+          <Route
+            path="/production"
+            element={
+              <ProtectedRoute>
+                <ProductionDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Material Routes */}
+          <Route
+            path="/material"
+            element={
+              <ProtectedRoute>
+                <MaterialDashboard />
+              </ProtectedRoute>
+            }
+          />
 
           {/* Catch-all fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Calendar, FileText, Loader2, Save, AlertCircle } from 'lucide-react';
-import type { Customer, OrderPart, Order } from '../../types/orders';
+import type { Customer, OrderPart, Order } from '../../store/types/orders';
 import { useCustomers, useParts, api } from '../../hooks/ordersapi';
 import CustomerSelect from './CustomerSelect';
 import PartSelect from './PartSelect';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { FileText, Package, Calendar, User, Clock, Loader2, Eye, Edit } from 'lucide-react';
-import type { PopulatedOrder } from '../../types/orders';
+import type { PopulatedOrder } from '../../store/types/orders';
 
 interface OrdersListProps {
   orders: PopulatedOrder[];

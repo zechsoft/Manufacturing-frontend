@@ -1,5 +1,5 @@
 // src/services/api.ts
-import type { Material, FormData } from '../types/Material'; // We'll create this type file next
+import type { Material, FormData } from '../store/types/Material'; // We'll create this type file next
 
 const API_URL = `${import.meta.env.VITE_API_URL}/api/materials`;
 

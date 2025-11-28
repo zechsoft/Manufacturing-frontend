@@ -12,7 +12,7 @@ interface Plan {
   createdAt?: string;
 }
 
-export default function PlanningDashboard() {
+export default function PlanningManagement() {
   const [plans, setPlans] = useState<Plan[]>([]);
   const [loading, setLoading] = useState(false);
   const [openModal, setOpenModal] = useState(false);

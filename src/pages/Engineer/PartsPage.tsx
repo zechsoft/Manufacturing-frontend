@@ -3,7 +3,7 @@ import { Plus, RefreshCw } from "lucide-react";
 import PartsListView from "../../components/parts/PartsListView";
 import PartForm from "../../components/parts/PartForm";
 import PartDetailsView from "../../components/parts/PartDetailsView";
-import type { Part, Customer, PartFormData } from "../../types/Part";
+import type { Part, Customer, PartFormData } from "../../store/types/Part";
 import type { Material } from "../../store/materialApi";
 import { getAllMaterials } from "../../store/materialApi";
 import { apiService } from "../../services/customerapi";

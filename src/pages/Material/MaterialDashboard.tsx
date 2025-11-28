@@ -13,7 +13,7 @@ import type {
   FormData,
   Errors,
   Notification
-} from '../../types/Material';
+} from '../../store/types/Material';
 const MaterialDashboard: React.FC = () => {
   const { user, logout } = useAuthStore();
 

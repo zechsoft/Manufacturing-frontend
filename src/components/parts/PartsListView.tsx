@@ -1,5 +1,5 @@
 import { RefreshCw } from 'lucide-react';
-import type { Part } from '../../types/Part';
+import type { Part } from '../../store/types/Part';
 
 interface PartsListViewProps {
   parts: Part[];

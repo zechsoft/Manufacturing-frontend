@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Plus, Trash2, Save, RefreshCw } from 'lucide-react';
-import type { Customer, PartFormData, ProcessStep } from '../../types/Part';
+import type { Customer, PartFormData, ProcessStep } from '../../store/types/Part';
 
 interface PartFormProps {
   initialData?: PartFormData;

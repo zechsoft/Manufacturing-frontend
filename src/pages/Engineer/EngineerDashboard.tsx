@@ -9,7 +9,7 @@ import {
   User, 
   Package 
 } from 'lucide-react';
-import type { Part, Customer, PartFormData } from '../../types/Part';
+import type { Part, Customer, PartFormData } from '../../store/types/Part';
 import { useAuthStore } from "../../store/authStore";
 import PartsListView from '../../components/parts/PartsListView';
 import PartForm from '../../components/parts/PartForm';

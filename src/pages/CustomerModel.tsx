@@ -7,7 +7,7 @@ import { ConfirmDialog } from '../components/Admin/ConfirmDialog';
 import { Toast } from '../components/Admin/Toast';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useCustomers } from '../hooks/usecustomers';
-import type { Customer } from '../types/customer';
+import type { Customer } from '../store/types/customer';
 
 function App() {
   const {

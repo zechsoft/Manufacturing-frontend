@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Factory, TrendingUp, Package, FileText, Plus } from 'lucide-react';
 import { useOrders } from '../../hooks/ordersapi';
-import type { PopulatedOrder } from '../../types/orders';
+import type { PopulatedOrder } from '../../store/types/orders';
 import OrdersList from './OrderList';
 import CreateOrderModal from './CreateOrderModel';
 import ViewOrderModal from './ViewOrderModel';
@@ -12,7 +12,7 @@ const Dashboard: React.FC = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<PopulatedOrder | null>(null);
-  const { orders, loading: ordersLoading, error: ordersError, refetch: refetchOrders } = useOrders();
+  const { orders, loading: ordersLoading, error: ordersError, refetch: reafetchOrders } = useOrders();
 
   const handleOrderCreated = () => {
     refetchOrders(); // Refresh orders list

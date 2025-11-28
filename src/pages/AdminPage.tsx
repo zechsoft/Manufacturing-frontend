@@ -7,7 +7,7 @@ const AdminPage = () => {
   const { user, isAuthenticated, logout } = useAuthStore();
   const navigate = useNavigate();
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true); // Start with sidebar open
   const [activeTab, setActiveTab] = useState("dashboard");
 
   // Toggle sidebar open/close
@@ -45,8 +45,12 @@ const AdminPage = () => {
         onLogout={logout}
       />
 
-      {/* Main Content */}
-      <div className="lg:ml-72 transition-all duration-300">
+      {/* Main Content - Dynamic margin based on sidebar state */}
+      <div 
+        className={`transition-all duration-300 ${
+          sidebarOpen ? 'ml-64' : 'ml-20'
+        }`}
+      >
         <main className="p-6 lg:p-8">
           <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
             <h1 className="text-3xl font-bold text-gray-900 mb-6">

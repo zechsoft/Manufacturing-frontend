@@ -1,6 +1,6 @@
 import React from 'react';
 import { Edit, Trash2, Mail, Phone, MapPin, Calendar, CreditCard } from 'lucide-react';
-import type { Customer } from '../../types/customer';
+import type { Customer } from '../../store/types/customer';
 
 interface CustomerCardProps {
   customer: Customer;

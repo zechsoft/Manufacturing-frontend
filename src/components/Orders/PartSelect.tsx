@@ -1,6 +1,6 @@
 import React from 'react';
 import { Package, Plus, Minus, Loader2 } from 'lucide-react';
-import type { Part, OrderPart } from '../../types/orders';
+import type { Part, OrderPart } from '../../store/types/orders';
 
 interface PartSelectProps {
   parts: Part[];

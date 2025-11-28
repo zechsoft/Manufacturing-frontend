@@ -1,4 +1,4 @@
-import type { Part, ProcessStep } from '../../types/Part';
+import type { Part, ProcessStep } from '../../store/types/Part';
 
 interface PartDetailsViewProps {
   part: Part;

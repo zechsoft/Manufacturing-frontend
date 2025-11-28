@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, FileText, Building2, Package, Calendar, User, Clock, MapPin, Phone, Mail } from 'lucide-react';
-import type { PopulatedOrder } from '../../types/orders';
+import type { PopulatedOrder } from '../../store/types/orders';
 
 interface ViewOrderModalProps {
   isOpen: boolean;

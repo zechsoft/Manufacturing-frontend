@@ -1,11 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import { useAuthStore } from "../store/authStore";
 import Sidebar from "./Sidebar";
 
-const AdminLayout = () => {
+const CommonLayout: React.FC = () => {
   const { user, logout } = useAuthStore();
-  const [sidebarOpen, setSidebarOpen] = useState(true); // Start with sidebar open
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [activeTab, setActiveTab] = useState("dashboard");
 
   if (!user) return null;
@@ -22,13 +22,7 @@ const AdminLayout = () => {
         user={user}
         onLogout={logout}
       />
-      
-      {/* Main Content - Dynamic margin based on sidebar state */}
-      <div 
-        className={`transition-all duration-300 ${
-          sidebarOpen ? 'ml-64' : 'ml-20'
-        }`}
-      >
+      <div className={`transition-all duration-300 ${sidebarOpen ? "ml-64" : "ml-20"}`}>
         <main className="p-6 lg:p-8">
           <Outlet />
         </main>
@@ -37,4 +31,4 @@ const AdminLayout = () => {
   );
 };
 
-export default AdminLayout;
+export default CommonLayout;

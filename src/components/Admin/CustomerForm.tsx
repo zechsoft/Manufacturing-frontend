@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { X, Save, AlertCircle } from 'lucide-react';
-import type { Customer, CustomerFormData } from '../../types/customer';
+import type { Customer, CustomerFormData } from '../../store/types/customer';
 import { getValidationErrors } from '../../utils/customervalidation';
 import LoadingSpinner from './LoadingSpinner';
 

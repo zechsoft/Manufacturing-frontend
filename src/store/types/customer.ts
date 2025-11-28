@@ -1,4 +1,11 @@
 export interface Customer {
+  vendorType: string;
+  vendorCode: number;
+  accountHolderName: string;
+  bankName: string;
+  accountNumber: string;
+  ifscCode: string;
+  branch: string;
   _id: string;
   customerId: string;
   companyName: string;
@@ -17,6 +24,13 @@ export interface Customer {
 }
 
 export interface CustomerFormData {
+  vendorType: string | number | readonly string[] | undefined;
+  vendorCode: string | number | readonly string[] | undefined;
+  accountHolderName: string | number | readonly string[] | undefined;
+  bankName: string | number | readonly string[] | undefined;
+  accountNumber: string | number | readonly string[] | undefined;
+  ifscCode: string | number | readonly string[] | undefined;
+  branch: string | number | readonly string[] | undefined;
   companyName: string;
   phone: string;
   email: string;

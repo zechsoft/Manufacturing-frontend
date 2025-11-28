@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChevronDown, Building2, Loader2 } from 'lucide-react';
-import type { Customer } from '../../types/orders';
+import type { Customer } from '../../store/types/orders';
 
 interface CustomerSelectProps {
   customers: Customer[];
