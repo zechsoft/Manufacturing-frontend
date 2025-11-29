@@ -7,7 +7,7 @@ export interface PlanPayload {
   timeDuration?: string;
   tooling?: string;
   machineAvailability?: string;
-  shiftTimings?: string;
+  shiftTimings?: string; 
   status?: string;
 }
 
