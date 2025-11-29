@@ -16,8 +16,8 @@ const AnalyticsPage: React.FC = () => {
     const fetchData = async () => {
       try {
         const [posResponse, companiesResponse] = await Promise.all([
-          fetch('http://localhost:5000/api/planning/po'),
-          fetch('http://localhost:5000/api/customers/')
+          fetch('http://manufacturing-frontend-rose.vercel.app/api/planning/po'),
+          fetch('http://manufacturing-frontend-rose.vercel.app/api/customers/')
         ]);
         
         const posData = await posResponse.json();

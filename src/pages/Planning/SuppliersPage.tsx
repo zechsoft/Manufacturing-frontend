@@ -19,7 +19,7 @@ const SuppliersPage: React.FC = () => {
   useEffect(() => {
     const fetchCompanies = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/customers/');
+        const response = await fetch('http://manufacturing-frontend-rose.vercel.app/api/customers/');
         const data = await response.json();
         if (data.success) {
           setCompanies(data.data);
