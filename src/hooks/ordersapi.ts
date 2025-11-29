@@ -1,21 +1,25 @@
 import { useState, useEffect } from 'react';
-import type { Customer, Part, Order, PopulatedOrder } from '../types/orders';
+import type { Customer, Part, Order, PopulatedOrder } from '../store/types/orders';
 
-const API_BASE_URL = 'http://manufacturing-frontend-rose.vercel.app/api';
+const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
 
 // API utility functions
 export const api = {
   // Customer endpoints
   customers: {
     getAll: async (): Promise<Customer[]> => {
-      const response = await fetch(`${API_BASE_URL}/customers`);
+      const response = await fetch(`${API_BASE_URL}/customers`, {
+        credentials: 'include',
+      });
       if (!response.ok) throw new Error('Failed to fetch customers');
       const result = await response.json();
       return result.data || result;
     },
     
     getById: async (id: string): Promise<Customer> => {
-      const response = await fetch(`${API_BASE_URL}/customers/${id}`);
+      const response = await fetch(`${API_BASE_URL}/customers/${id}`, {
+        credentials: 'include',
+      });
       if (!response.ok) throw new Error('Failed to fetch customer');
       const result = await response.json();
       return result.data || result;
@@ -25,6 +29,7 @@ export const api = {
       const response = await fetch(`${API_BASE_URL}/customers`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(customer),
       });
       if (!response.ok) throw new Error('Failed to create customer');
@@ -36,7 +41,9 @@ export const api = {
   // Parts endpoints  
   parts: {
     getByCustomer: async (customerId: string): Promise<Part[]> => {
-      const response = await fetch(`${API_BASE_URL}/customers`);
+      const response = await fetch(`${API_BASE_URL}/customers`, {
+        credentials: 'include',
+      });
       if (!response.ok) throw new Error('Failed to fetch customers');
       const result = await response.json();
       const customers = result.data || result;
@@ -66,7 +73,9 @@ export const api = {
   // Orders endpoints
   orders: {
     getAll: async (): Promise<PopulatedOrder[]> => {
-      const response = await fetch(`${API_BASE_URL}/planning`);
+      const response = await fetch(`${API_BASE_URL}/planning`, {
+        credentials: 'include',
+      });
       if (!response.ok) throw new Error('Failed to fetch orders');
       const result = await response.json();
       return result.data || result;
@@ -76,6 +85,7 @@ export const api = {
       const response = await fetch(`${API_BASE_URL}/planning`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(order),
       });
       if (!response.ok) {
@@ -94,6 +104,7 @@ export const api = {
       const response = await fetch(`${API_BASE_URL}/planning/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(order),
       });
       if (!response.ok) throw new Error('Failed to update order');
