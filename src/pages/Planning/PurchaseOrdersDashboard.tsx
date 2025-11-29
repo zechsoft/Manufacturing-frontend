@@ -130,12 +130,13 @@ const PurchaseOrdersDashboard: React.FC = () => {
     materials: []
   });
 
-  const API_BASE_URL = 'http://manufacturing-frontend-rose.vercel.app/api';
+  const API_BASE_URL = `${import.meta.env.VITE_API_URL}/api`;
 
   // API Helper Function
   const apiCall = async (url: string, options: RequestInit = {}) => {
     try {
       const response = await fetch(`${API_BASE_URL}${url}`, {
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
           ...options.headers,

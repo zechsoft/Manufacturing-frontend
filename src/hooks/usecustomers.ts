@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import type { Customer, ApiResponse } from '../types/customer';
+import type { Customer, ApiResponse } from '../store/types/customer';
 import { apiService } from '../services/customerapi';
 
 export const useCustomers = () => {

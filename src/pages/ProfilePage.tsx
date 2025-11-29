@@ -12,11 +12,14 @@ import {
   Camera,
   Shield,
   Briefcase,
+  ArrowLeft,
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import { useNavigate } from 'react-router-dom';
 
 const ProfilePage: React.FC = () => {
   const { user } = useAuthStore();
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
@@ -62,8 +65,15 @@ const ProfilePage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6 space-y-6">
-      {/* Header */}
+      {/* Header with Back Button */}
       <div className="mb-8">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center space-x-2 text-slate-600 hover:text-slate-800 mb-4 transition-colors"
+        >
+          <ArrowLeft className="h-5 w-5" />
+          <span>Back</span>
+        </button>
         <h2 className="text-3xl font-bold text-slate-800 mb-2">My Profile</h2>
         <p className="text-slate-600">Manage your personal information and preferences</p>
       </div>

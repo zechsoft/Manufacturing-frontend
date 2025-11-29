@@ -12,11 +12,15 @@ import {
   Eye,
   EyeOff,
   Check,
+  ArrowLeft,
+  Download,
 } from 'lucide-react';
 import { useAuthStore } from '../store/authStore';
+import { useNavigate } from 'react-router-dom';
 
 const SettingsPage: React.FC = () => {
   const { user } = useAuthStore();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('general');
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -74,8 +78,15 @@ const SettingsPage: React.FC = () => {
 
   return (
      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6 space-y-6">
-      {/* Header */}
+      {/* Header with Back Button */}
       <div className="mb-8">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center space-x-2 text-slate-600 hover:text-slate-800 mb-4 transition-colors"
+        >
+          <ArrowLeft className="h-5 w-5" />
+          <span>Back</span>
+        </button>
         <h2 className="text-3xl font-bold text-slate-800 mb-2">Settings</h2>
         <p className="text-slate-600">Manage your account settings and preferences</p>
       </div>
