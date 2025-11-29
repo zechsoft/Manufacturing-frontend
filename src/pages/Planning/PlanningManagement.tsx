@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllPlans, deletePlan } from "../../services/planningApi.ts";
+import { getAllPlans, deletePlan } from "../../services/planningapi.ts";
 import NewPlanModal from "../../components/planning/NewPlanModal";
 import toast from "react-hot-toast";
 

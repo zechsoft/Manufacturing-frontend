@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { createPlan } from "../../services/planningApi";
+import { createPlan } from "../../services/planningapi";
 import toast from "react-hot-toast";
 
 interface Props {
