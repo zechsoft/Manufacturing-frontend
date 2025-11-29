@@ -56,7 +56,7 @@ const UsersPage: React.FC = () => {
     customerId: '',
   });
 
-  const API_BASE_URL = 'http://localhost:5000/api';
+  const API_BASE_URL = 'http://manufacturing-frontend-rose.vercel.app/api';
 
   const roles = [
     { value: 'admin', label: 'Admin', color: 'bg-purple-100 text-purple-800' },

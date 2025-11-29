@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import type { Customer, Part, Order, PopulatedOrder } from '../types/orders';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+const API_BASE_URL = 'http://manufacturing-frontend-rose.vercel.app/api';
 
 // API utility functions
 export const api = {
