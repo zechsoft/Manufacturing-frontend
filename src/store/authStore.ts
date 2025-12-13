@@ -5,6 +5,7 @@ import axios from "axios";
 export interface User {
   _id: string;
   name: string;
+  email: string;
   role: "user" | "admin" | "planning" | "production" | "quality" | "purchase" | "npd" | "sales" | "stores";
   lastLogin: Date;
 }
