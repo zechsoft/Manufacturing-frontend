@@ -4,10 +4,17 @@ import axios from "axios";
 
 export interface User {
   _id: string;
-  email: string;
   name: string;
-  role: "user" | "admin" | "planning" | "production" | "quality" | "material" | "engineer";
-  lastLogin: Date;
+  email: string;
+  role: string;
+  phone?: string;
+  companyName?: string;
+  department?: string;
+  location?: string;
+  bio?: string;
+  profileImage?: string;
+  joinedDate?: string;
+  lastLogin?: string;
 }
 
 interface AuthState {
@@ -26,7 +33,10 @@ interface AuthActions {
   checkAuth: () => Promise<void>;
 }
 
-const API_URL = `${import.meta.env.VITE_API_URL}/api/auth`;
+// Use proxy in development, environment variable in production
+const API_URL = import.meta.env.MODE === "development" 
+  ? "/api/auth"  // Use Vite proxy in development
+  : `${import.meta.env.VITE_API_URL}/api/auth`; // Use env var in production
 
 axios.defaults.withCredentials = true;
 

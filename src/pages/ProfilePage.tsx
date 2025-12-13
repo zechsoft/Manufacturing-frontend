@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   User,
   Mail,
@@ -17,35 +17,108 @@ import {
 import { useAuthStore } from '../store/authStore';
 import { useNavigate } from 'react-router-dom';
 
+const API_URL = "/api"; // Use proxy for all environments
+
 const ProfilePage: React.FC = () => {
   const { user } = useAuthStore();
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const [profileData, setProfileData] = useState({
-    name: user?.name || '',
-    email: user?.email || '',
-    phone: '+91 9876543210',
-    role: user?.role || '',
-    companyName: user?.companyName || '',
-    department: 'Manufacturing',
-    location: 'Madurai, Tamil Nadu',
-    bio: 'Experienced manufacturing professional with a passion for quality and efficiency.',
-    joinedDate: '2024-01-15',
+    name: '',
+    email: '',
+    phone: '',
+    role: '',
+    companyName: '',
+    department: '',
+    location: '',
+    bio: '',
+    joinedDate: '',
   });
 
-  const handleSave = () => {
-    // Simulate API call
-    setSaveSuccess(true);
-    setIsEditing(false);
-    setTimeout(() => setSaveSuccess(false), 3000);
-    console.log('Saving profile data:', profileData);
+  // Fetch profile data on component mount
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`${API_URL}/users/profile`, {
+          method: 'GET',
+          credentials: 'include', // Important: This sends cookies
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          setProfileData({
+            name: data.user.name || '',
+            email: data.user.email || '',
+            phone: data.user.phone || '+91 9876543210',
+            role: data.user.role || '',
+            companyName: data.user.companyName || '',
+            department: data.user.department || 'Manufacturing',
+            location: data.user.location || 'Madurai, Tamil Nadu',
+            bio: data.user.bio || 'Experienced manufacturing professional with a passion for quality and efficiency.',
+            joinedDate: data.user.joinedDate || new Date().toISOString(),
+          });
+        } else {
+          setError(data.message || 'Failed to load profile');
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+        setError('Failed to load profile. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      setError('');
+      const response = await fetch(`${API_URL}/users/profile`, {
+        method: 'PUT',
+        credentials: 'include', // Important: This sends cookies
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: profileData.name,
+          phone: profileData.phone,
+          companyName: profileData.companyName,
+          department: profileData.department,
+          location: profileData.location,
+          bio: profileData.bio,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSaveSuccess(true);
+        setIsEditing(false);
+        setTimeout(() => setSaveSuccess(false), 3000);
+      } else {
+        setError(data.message || 'Failed to update profile');
+        alert('Failed to update profile: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      setError('Failed to update profile. Please try again.');
+      alert('Failed to update profile: ' + error);
+    }
   };
 
   const handleCancel = () => {
     setIsEditing(false);
-    // Reset to original data if needed
+    setError('');
   };
 
   const getRoleBadge = (role: string) => {
@@ -62,6 +135,17 @@ const ProfilePage: React.FC = () => {
   };
 
   const roleBadge = getRoleBadge(profileData.role);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-slate-600">Loading profile...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 p-6 space-y-6">
@@ -83,6 +167,14 @@ const ProfilePage: React.FC = () => {
         <div className="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg flex items-center space-x-2">
           <Save className="h-5 w-5" />
           <span>Profile updated successfully!</span>
+        </div>
+      )}
+
+      {/* Error Message */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg flex items-center space-x-2">
+          <X className="h-5 w-5" />
+          <span>{error}</span>
         </div>
       )}
 

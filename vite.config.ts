@@ -9,6 +9,15 @@ export default defineConfig({
     host: true,
     allowedHosts: [
       'mfrontend.onrender.com', // ✅ add your Render domain here
-    ]
+    ],
+    // Add proxy configuration
+    proxy: {
+      '/api': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+        ws: true, // Enable WebSocket proxying if needed
+      }
+    }
   }
 })
