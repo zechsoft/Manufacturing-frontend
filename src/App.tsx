@@ -8,11 +8,17 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import AdminLayout from "./layout/AdminLayout";
 import { Toaster } from "react-hot-toast";
 import { useAuthStore } from "./store/authStore";
-import EngineerDashboard from "./pages/Engineer/EngineerDashboard";
-import EngineerHome from "./pages/Engineer/EngineerHome";
-import DocumentsPage from "./pages/Engineer/DocumentsPage";
-import PartsPage from "./pages/Engineer/PartsPage";
-import MaterialDashboard from "./pages/Material/MaterialDashboard";
+import NpdDashboard from "./pages/Npd/NpdDashboard";
+import NpdHome from "./pages/Npd/NpdHome";
+import DocumentsPage from "./pages/Npd/DocumentsPage";
+import MasterPage from "./pages/Npd/MasterPage";
+import PlanningPage from "./pages/Npd/PlanningPage";
+import BillOfMaterialPage from "./pages/Npd/BillOfMaterialPage";
+import ProcessPage from "./pages/Npd/ProcessPage";
+import ItemProcessPage from "./pages/Npd/ItemProcessPage";
+import PurchaseDashboard from "./pages/Purchase/PurchaseDashboard";
+import SalesDashboard from "./pages/Sales/SalesDashboard";
+import StoresDashboard from "./pages/Stores/StoresDashboard";
 import CustomerModel from "./pages/CustomerModel";
 import DocumentUpload from "./components/DocumentUpload";
 import PurchaseOrdersDashboard from "./pages/Planning/PurchaseOrdersDashboard";
@@ -63,10 +69,14 @@ const RoleBasedDashboard = ({ role, user }: { role: string; user: any }) => {
   switch (role) {
     case "admin":
       return <AdminPage />;
-    case "engineer":
-      return <Navigate to="/engineer" replace />;
-    case "material":
-      return <MaterialDashboard />;
+    case "npd":
+      return <Navigate to="/npd" replace />;
+    case "purchase":
+      return <Navigate to="/purchase" replace />;
+    case "sales":
+      return <Navigate to="/sales" replace />;
+    case "stores":
+      return <Navigate to="/stores" replace />;
     case "planning":
       return <Navigate to="/planning" replace />;
     case "production":
@@ -245,18 +255,22 @@ const App = () => {
           <Route path="/upload-doc" element={<DocumentUpload />} />
           <Route path="/orders" element={<OrdersDashboard />} />
 
-          {/* Engineer Routes */}
+          {/* NPD Routes */}
           <Route
-            path="/engineer"
+            path="/npd"
             element={
               <ProtectedRoute>
-                <EngineerDashboard />
+                <NpdDashboard />
               </ProtectedRoute>
             }
           >
-            <Route index element={<EngineerHome />} /> 
+            <Route index element={<NpdHome />} /> 
+            <Route path="master" element={<MasterPage />} />
+            <Route path="planning" element={<PlanningPage />} />
+            <Route path="bill-of-material" element={<BillOfMaterialPage />} />
+            <Route path="process" element={<ProcessPage />} />
+            <Route path="item-process" element={<ItemProcessPage />} />
             <Route path="documents" element={<DocumentsPage />} />
-            <Route path="parts" element={<PartsPage />} /> 
           </Route>
 
           {/* Quality Routes */}
@@ -294,12 +308,32 @@ const App = () => {
             }
           />
 
-          {/* Material Routes */}
+          {/* Purchase Routes */}
           <Route
-            path="/material"
+            path="/purchase"
             element={
               <ProtectedRoute>
-                <MaterialDashboard />
+                <PurchaseDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Sales Routes */}
+          <Route
+            path="/sales"
+            element={
+              <ProtectedRoute>
+                <SalesDashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Stores Routes */}
+          <Route
+            path="/stores"
+            element={
+              <ProtectedRoute>
+                <StoresDashboard />
               </ProtectedRoute>
             }
           />

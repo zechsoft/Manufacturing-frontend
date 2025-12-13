@@ -17,9 +17,11 @@ import {
   TrendingUp,
   BarChart3,
   User as UserIcon,
+  Store,
+  DollarSign,
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import type { User } from '../store/types/User';
+import type { User } from '../store/authStore';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -72,18 +74,13 @@ const Sidebar: React.FC<SidebarProps> = ({
         { icon: Users, label: 'Users', path: '/admin/users', itemName: 'users' },
         { icon: Users, label: 'Customers', path: '/admin/customers', itemName: 'customers' },
         { icon: FileText, label: 'Orders', path: '/admin/orders', itemName: 'orders' },
-        // { icon: Package, label: 'Products', path: '/products', itemName: 'products' },
-        // { icon: ClipboardList, label: 'Planning', path: '/planning', itemName: 'planning' },
-        // { icon: Factory, label: 'Production', path: '/production', itemName: 'production' },
-        // { icon: CheckCircle, label: 'Quality', path: '/quality', itemName: 'quality' },
-        // { icon: Archive, label: 'Material', path: '/material', itemName: 'material' },
         { icon: UserIcon, label: 'Profile', path: '/profile', itemName: 'profile' },
         { icon: Settings, label: 'Settings', path: '/settings', itemName: 'settings' },
       ],
-      engineer: [
+      npd: [
         ...commonItems,
-        { icon: FileText, label: 'Documents', path: '/engineer/documents', itemName: 'documents' },
-        { icon: Package, label: 'Parts', path: '/engineer/parts', itemName: 'parts' },
+        { icon: FileText, label: 'Documents', path: '/npd/documents', itemName: 'documents' },
+        { icon: Package, label: 'Parts', path: '/npd/parts', itemName: 'parts' },
         { icon: Package, label: 'Products', path: '/products', itemName: 'products' },
         { icon: UserIcon, label: 'Profile', path: '/profile', itemName: 'profile' },
         { icon: Settings, label: 'Settings', path: '/settings', itemName: 'settings' },
@@ -120,11 +117,32 @@ const Sidebar: React.FC<SidebarProps> = ({
         { icon: UserIcon, label: 'Profile', path: '/profile', itemName: 'profile' },
         { icon: Settings, label: 'Settings', path: '/settings', itemName: 'settings' },
       ],
-      material: [
+      purchase: [
         ...commonItems,
-        { icon: Archive, label: 'Material', path: '/material', itemName: 'material' },
-        { icon: ShoppingCart, label: 'Inventory', path: '/inventory', itemName: 'inventory' },
-        { icon: Package, label: 'Suppliers', path: '/material/suppliers', itemName: 'suppliers' },
+        { icon: ShoppingCart, label: 'Purchase Orders', path: '/purchase/orders', itemName: 'orders' },
+        { icon: Users, label: 'Vendors', path: '/purchase/vendors', itemName: 'vendors' },
+        { icon: Archive, label: 'Inventory', path: '/purchase/inventory', itemName: 'inventory' },
+        { icon: BarChart3, label: 'Analytics', path: '/purchase/analytics', itemName: 'analytics' },
+        { icon: Package, label: 'Products', path: '/products', itemName: 'products' },
+        { icon: UserIcon, label: 'Profile', path: '/profile', itemName: 'profile' },
+        { icon: Settings, label: 'Settings', path: '/settings', itemName: 'settings' },
+      ],
+      sales: [
+        ...commonItems,
+        { icon: DollarSign, label: 'Sales Orders', path: '/sales/orders', itemName: 'orders' },
+        { icon: Users, label: 'Customers', path: '/sales/customers', itemName: 'customers' },
+        { icon: FileText, label: 'Quotations', path: '/sales/quotations', itemName: 'quotations' },
+        { icon: BarChart3, label: 'Analytics', path: '/sales/analytics', itemName: 'analytics' },
+        { icon: Package, label: 'Products', path: '/products', itemName: 'products' },
+        { icon: UserIcon, label: 'Profile', path: '/profile', itemName: 'profile' },
+        { icon: Settings, label: 'Settings', path: '/settings', itemName: 'settings' },
+      ],
+      stores: [
+        ...commonItems,
+        { icon: Store, label: 'Inventory', path: '/stores/inventory', itemName: 'inventory' },
+        { icon: ClipboardList, label: 'Stock In', path: '/stores/stock-in', itemName: 'stock-in' },
+        { icon: ClipboardList, label: 'Stock Out', path: '/stores/stock-out', itemName: 'stock-out' },
+        { icon: BarChart3, label: 'Reports', path: '/stores/reports', itemName: 'reports' },
         { icon: Package, label: 'Products', path: '/products', itemName: 'products' },
         { icon: UserIcon, label: 'Profile', path: '/profile', itemName: 'profile' },
         { icon: Settings, label: 'Settings', path: '/settings', itemName: 'settings' },

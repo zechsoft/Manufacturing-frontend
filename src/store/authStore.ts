@@ -5,16 +5,8 @@ import axios from "axios";
 export interface User {
   _id: string;
   name: string;
-  email: string;
-  role: string;
-  phone?: string;
-  companyName?: string;
-  department?: string;
-  location?: string;
-  bio?: string;
-  profileImage?: string;
-  joinedDate?: string;
-  lastLogin?: string;
+  role: "user" | "admin" | "planning" | "production" | "quality" | "purchase" | "npd" | "sales" | "stores";
+  lastLogin: Date;
 }
 
 interface AuthState {
@@ -39,6 +31,50 @@ const API_URL = import.meta.env.MODE === "development"
   : `${import.meta.env.VITE_API_URL}/api/auth`; // Use env var in production
 
 axios.defaults.withCredentials = true;
+
+// Mock users data for testing
+const MOCK_USERS = [
+  {
+    _id: "mock-npd-001",
+    email: "npd@company.com",
+    password: "npd123456",
+    name: "NPD Manager",
+    role: "npd" as const,
+    lastLogin: new Date()
+  },
+  {
+    _id: "mock-purchase-001",
+    email: "purchase@company.com",
+    password: "purchase123456",
+    name: "Purchase Manager",
+    role: "purchase" as const,
+    lastLogin: new Date()
+  },
+  {
+    _id: "mock-sales-001",
+    email: "sales@company.com",
+    password: "sales123456",
+    name: "Sales Manager",
+    role: "sales" as const,
+    lastLogin: new Date()
+  },
+  {
+    _id: "mock-stores-001",
+    email: "stores@company.com",
+    password: "stores123456",
+    name: "Stores Manager",
+    role: "stores" as const,
+    lastLogin: new Date()
+  },
+  {
+    _id: "mock-admin-001",
+    email: "admin@company.com",
+    password: "admin123456",
+    name: "Admin User",
+    role: "admin" as const,
+    lastLogin: new Date()
+  }
+];
 
 export const useAuthStore = create<AuthState & AuthActions>()(
   persist(
@@ -84,7 +120,31 @@ export const useAuthStore = create<AuthState & AuthActions>()(
 
       login: async (email: string, password: string) => {
         set({ isLoading: true, error: null });
+        
         try {
+          // Check for mock users first
+          const mockUser = MOCK_USERS.find(
+            u => u.email === email && u.password === password
+          );
+
+          if (mockUser) {
+            // Mock login successful
+            console.log('Mock login successful for:', email);
+            const { password: _, ...userWithoutPassword } = mockUser;
+            
+            // Simulate API delay
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            set({
+              isAuthenticated: true,
+              user: userWithoutPassword,
+              error: null,
+              isLoading: false,
+            });
+            return;
+          }
+
+          // If not a mock user, try real API
           const response = await axios.post(`${API_URL}/login`, { email, password });
           console.log('Login response:', response.data);
           
@@ -100,7 +160,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           }
         } catch (error: any) {
           console.error('Login error:', error);
-          let errorMessage = "Error logging in";
+          let errorMessage = "Invalid email or password";
           if (axios.isAxiosError(error) && error.response?.data?.message) {
             errorMessage = error.response.data.message;
           }
@@ -117,7 +177,15 @@ export const useAuthStore = create<AuthState & AuthActions>()(
       logout: async () => {
         set({ isLoading: true, error: null });
         try {
-          await axios.post(`${API_URL}/logout`);
+          // Check if current user is a mock user
+          const currentUser = get().user;
+          const isMockUser = MOCK_USERS.some(u => u._id === currentUser?._id);
+
+          if (!isMockUser) {
+            // Only call API logout for real users
+            await axios.post(`${API_URL}/logout`);
+          }
+          
           set({ 
             user: null, 
             isAuthenticated: false, 
@@ -150,6 +218,23 @@ export const useAuthStore = create<AuthState & AuthActions>()(
         console.log('Starting checkAuth...');
         
         try {
+          // Check if current user is a mock user (from persisted state)
+          const persistedUser = get().user;
+          const isMockUser = MOCK_USERS.some(u => u._id === persistedUser?._id);
+
+          if (isMockUser && persistedUser) {
+            // Mock user is already authenticated from persisted state
+            console.log('Mock user authenticated from storage:', persistedUser.email);
+            set({ 
+              user: persistedUser, 
+              isAuthenticated: true, 
+              isCheckingAuth: false,
+              error: null
+            });
+            return;
+          }
+
+          // For real users, check with API
           const response = await axios.get(`${API_URL}/check-auth`);
           console.log('CheckAuth response:', response.data);
           
